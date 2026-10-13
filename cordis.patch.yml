@@ -1,0 +1,20 @@
+# dsh bundle patch: inserts this plugin into a profile's layer stack.
+#
+# `dsh plugin --profile <name> add <package>` reconciles `dsh.profile.bundles`
+# against installed packages and, seeing this declaration, appends the package
+# to the bundle stack. The profile boot then merges THIS patch, so no profile
+# file needs editing by hand.
+#
+# 配置含义（插件不导出 schema，缺省即默认值，键可省略）：
+#   edits  —— 编辑（锚定替换）前自动登记观察：默认 true。
+#             替换仍必须逐字匹配当前内容，匹配不上就失败，所以风险可控。
+#   writes —— 整文件覆盖前也自动登记：默认 false，**不建议随意打开**。
+#             盲覆盖没有逐字匹配兜底，一开就等于放弃「先读后写」这层保护。
+#   log    —— 每次介入打一行日志：默认 true。安全放宽不该是无声的。
+- insert:
+    - id: fs-auto-observe
+      name: '@ruaibeite/dsh-auto-observe'
+      config:
+        edits: true
+        writes: false
+        log: true
