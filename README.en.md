@@ -29,6 +29,14 @@ saw the content. `edit` is on by default because an anchored replacement still h
 current text byte for byte. `write` — a blind full overwrite — is **off** by default (`writes:
 true` to change that) because it has no such backstop. Every intervention logs one line.
 
+### One known bound
+
+The mirror starts recording when this plugin loads. That is harmless on the normal path — the
+plugin needs a Harness restart, and a restart empties the policy's in-memory ledger too, so both
+start from zero together. The one exception is hot-enabling this plugin mid-session, after files
+have already been read: those earlier records are unknown to the mirror, so the plugin records
+their current version once, which relaxes staleness for that single edit. A restart realigns them.
+
 ## Install
 
 ```sh
